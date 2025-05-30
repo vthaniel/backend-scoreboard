@@ -17,6 +17,12 @@
             "results_dir": "./results/jaxonnxruntime/stable",
             "core_packages": ["onnx", "jaxonnxruntime"],
             "dockerfile_link": "runtimes/jaxonnxruntime/stable/Dockerfile"
+        },
+        "onnxruntime-openvino": {
+            "name": "ONNXRUNTIME-OPENVINO",
+            "results_dir": "./results/onnxruntime-openvino/stable",
+            "core_packages": ["onnxruntime-openvino"],
+            "dockerfile_link": "runtimes/onnxruntime-openvino/stable/Dockerfile"
         }
     },
     "development": {

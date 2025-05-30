@@ -139,3 +139,28 @@ jobs:
       - name: Deploy results
         if: ${{ github.event_name == 'schedule' }}
         run: . setup/git-deploy-results.sh
+
+  onnxruntime_openvino_stable:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Build docker image
+        run: docker build -t scoreboard/onnxruntime-openvino -f runtimes/onnxruntime-openvino/stable/Dockerfile .
+
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+            ssh-private-key: |
+                  ${{ secrets.DEPLOY_KEY }}
+
+      - name: Git setup
+        run: . setup/git-setup.sh
+
+      - name: Run docker container
+        run: docker run --name onnxruntime-openvino --env-file setup/env.list -v `pwd`/results/onnxruntime-openvino/stable:/root/results scoreboard/onnxruntime-openvino || true
+
+      - name: Deploy results
+        run: . setup/git-deploy-results.sh
